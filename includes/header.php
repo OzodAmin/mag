@@ -9,7 +9,7 @@ if(isset($_SESSION['lang']) && !empty($_SESSION['lang']))
     $lang = $_SESSION['lang'];
 
 include "language/".$lang.".php";
-require_once "config.php";
+require_once "params/config.php";
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang; ?>">
@@ -59,7 +59,7 @@ require_once "config.php";
                                         $sql ="SELECT id, name_".$lang." FROM categories";
                                         $query=mysqli_query($db,$sql);
                                         while($row=mysqli_fetch_array($query)){
-                                            printf("<li><a href='category.php?id=%s'>%s</a></li>", $row[0], $row[1]);
+                                            printf("<li><a href='products.php?cat=%s'>%s</a></li>", $row[0], $row[1]);
                                         }
                                     ?>
                                 </ul>
