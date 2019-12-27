@@ -6,6 +6,7 @@
     exit();
   }
 
+  $title = 'Index';
   include 'includes/header.php';
 ?>
 

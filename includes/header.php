@@ -1,5 +1,18 @@
+<?php
+session_start();
+$lang = 'ru';
+// Set Language variable
+if(isset($_GET['lang']) && !empty($_GET['lang']))
+    $_SESSION['lang'] = $_GET['lang'];
+
+if(isset($_SESSION['lang']) && !empty($_SESSION['lang']))
+    $lang = $_SESSION['lang'];
+
+include "language/".$lang.".php";
+require_once "config.php";
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -9,13 +22,14 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Essence - Fashion Ecommerce Template</title>
+    <title><?= empty($title)? 'Essence': $title; ?></title>
 
     <!-- Favicon  -->
     <link rel="icon" href="img/core-img/favicon.ico">
 
     <!-- Core Style CSS -->
     <link rel="stylesheet" href="css/core-style.css">
+    <?= empty($style) ? '':$style; ?> 
 
 </head>
 <body>
@@ -39,10 +53,20 @@
                     <!-- Nav Start -->
                     <div class="classynav">
                         <ul>
-                            <li><a href="blog.php">Blog</a></li>
-                            <li><a href="blog.php">Blog</a></li>
-                            <li><a href="blog.php">Blog</a></li>
-                            <li><a href="contact.php">Contact</a></li>
+                            <li><a href="#"><?= _CATEGORIES; ?></a>
+                                <ul class="dropdown">
+                                    <?php
+                                        $sql ="SELECT id, name_".$lang." FROM categories";
+                                        $query=mysqli_query($db,$sql);
+                                        while($row=mysqli_fetch_array($query)){
+                                            printf("<li><a href='category.php?id=%s'>%s</a></li>", $row[0], $row[1]);
+                                        }
+                                    ?>
+                                </ul>
+                            </li>
+                            <li><a href="products.php"><?= _ALLPRO; ?></a></li>
+                            <li><a href="#"><?= _ABOUTUS; ?></a></li>
+                            <li><a href="#"><?= _CONTACT; ?></a></li>
                         </ul>
                     </div>
                     <!-- Nav End -->
@@ -58,12 +82,20 @@
                         <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </form>
                 </div>
+                <!-- Favourite Area -->
+                <div class="favourite-area">
+                    <a href="?lang=ru"><img src="img/rus.png" alt=""></a>
+                </div>
+                <!-- User Login Info -->
+                <div class="user-login-info">
+                    <a href="?lang=uz"><img src="img/uzb.png" alt=""></a>
+                </div>
                 <!-- Cart Area -->
                 <div class="cart-area">
                     <a href="#" id="essenceCartBtn"><img src="img/core-img/bag.svg" alt=""> <span>3</span></a>
                 </div>
             </div>
-
         </div>
     </header>
     <!-- ##### Header Area End ##### -->
+    <?php include 'cart.php';?>
